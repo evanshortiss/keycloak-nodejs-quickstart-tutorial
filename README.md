@@ -50,7 +50,8 @@ with `docker run` above) and you should see the Keycloak home page:
 Click the _Administration Console_ link and login using the `KEYCLOAK_USER` and `KEYCLOAK_PASSWORD` values passed to `docker run`.
 
 Once logged in choose _Add Realm_ in the top left. Name it something simple
-without spaces like "TestApp" then click _Create_.
+without spaces like "TestApp" then click _Create_. This represents our
+application/project in Keycloak.
 
 ### Create a Client Application
 Navigate to the _Clients_ section of your Realm and choose _Create_. Enter a
@@ -62,12 +63,18 @@ _Public_, then navigate to the `Installation` tab and choose the format
 `Keycloak OIDC JSON`. Copy and paste the generated JSON into `www/keycloak.json`
 file of this repository.
 
+This client is a representation of our web application in Keycloak.
+
 ### Create a Backend Application
 Similar to the last step we need to create a backend application representation.
 Create a new _Client_ with the same information (http://localhost:3030), but
 this time instead of choosing _Public_ for _Access Type_ choose _Bearer Only_.
 Navigate to the _Installation_ tab and download the JSON again, but this time
 paste it into the `index.js` file to replace the existing `keycloakConf`.
+
+This client is a representation of our backend API in Keycloak and is required
+to secure our API endpoints using the `keycloak-connect` Node.js module's
+`keycloak.protect()` function.
 
 ### Create a User Account
 Finally, we need to create a user account to login. Navigate to the _Users_
