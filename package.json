@@ -1,0 +1,16 @@
+{
+  "name": "keycloak-nodejs-quickstart-tutorial",
+  "version": "0.0.1",
+  "description": "A strong starting point and tutorial for Keycloak secured applications",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Evan Shortiss <evanshortiss@gmail.com> (http://evanshortiss.com/)",
+  "license": "MIT",
+  "dependencies": {
+    "express": "~4.16.3",
+    "keycloak-connect": "~3.4.3"
+  }
+}

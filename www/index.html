@@ -1,0 +1,92 @@
+<html>
+  <head>
+    <title>Test Application</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="keycloak.js"></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <hr>
+      <h2>Welcome to this Keycloak Test Application</h3>
+
+      <p>Use the button below to initiate a login flow.</p>
+      <button onclick="doLogin()" type="button" class="btn btn-primary">Login</button>
+      <button onclick="doLogout()" type="button" class="btn btn-danger">Logout</button>
+      <button onclick="testApiAccess()" type="button" class="btn btn-info">Test API Access</button>
+
+      <br>
+      <br>
+
+      <h4>KeyCloak Token</h4>
+      <pre id="kc-token-raw"></pre>
+
+      <h4>KeyCloak Token Data</h4>
+      <pre id="kc-token-data"></pre>
+    </div>
+
+    <script>
+      var kc = Keycloak();
+
+      kc.init()
+        .success(function(authenticated) {
+          console.log('keycloak initialised')
+        })
+        .error(function() {
+          console.error('failed to initialize keycloak');
+        });
+
+      setTimeout(() => {
+        var rawEl = document.getElementById('kc-token-raw')
+        var parsedEl = document.getElementById('kc-token-data')
+
+        if (kc.token) {
+          rawEl.innerHTML = kc.token
+          parsedEl.innerHTML = JSON.stringify(kc.tokenParsed, null, 2)
+        } else {
+          rawEl.innerHTML = 'Please login to display raw token.'
+          parsedEl.innerHTML = 'Please login to display token data.'
+        }
+
+      }, 1000)
+
+      function testApiAccess () {
+        var url = 'http://localhost:3030/ping-protected'
+
+        var req = new XMLHttpRequest()
+
+        req.open('GET', url, true)
+        req.setRequestHeader('authorization', 'Bearer ' + kc.token)
+
+        req.onreadystatechange = function () {
+          if (req.readyState === 4) {
+            if (req.status === 200) {
+              alert('xhr success')
+            } else {
+              alert('xhr failed with status code: ' + req.status + '. you\'re probably not logged in')
+            }
+          }
+        }
+
+        req.send()
+      }
+
+      function doLogout () {
+        if (!kc.token) {
+          alert('not logged in, so we cannot logout')
+        } else {
+          kc.logout()
+        }
+      }
+
+      function doLogin () {
+        if (kc.token) {
+          alert('already logged in')
+        } else {
+          kc.login()
+        }
+      }
+    </script>
+  </body>
+</html>
