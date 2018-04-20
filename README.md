@@ -7,7 +7,7 @@ up and running in a couple of minutes.
 Our example application included is designed to run on a separate domain to its
 backend so we use _Bearer Only_ as our _Access Type_ when creating it in the
 Keycloak Adminstration console. This is typically used by Single Page Applications,
-Mobile Applications, and generally any applicatin that won't utilise Cookies.
+Mobile Applications, and generally any application that won't utilise Cookies.
 
 ## Prerequisites
 * Node.js 6+
